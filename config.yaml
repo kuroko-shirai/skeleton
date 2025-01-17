@@ -1,0 +1,6 @@
+mssql:
+  address: "10.0.1.251"
+  port: "1433"
+  username: "app_ms_ost"
+  password: "J7SxZ69tEU4ke8K3"
+  database: "OnlineStock"
