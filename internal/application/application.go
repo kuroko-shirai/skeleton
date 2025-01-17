@@ -9,12 +9,18 @@ import (
 )
 
 type App struct {
-	Services []service.Service
+	Services         []service.Service
+	ServicesWithDown []service.ServiceWithDown
 }
 
-func New(ctx context.Context, services []service.Service) (*App, error) {
+func New(
+	ctx context.Context,
+	services []service.Service,
+	servicesWithDown []service.ServiceWithDown,
+) (*App, error) {
 	return &App{
-		Services: services,
+		Services:         services,
+		ServicesWithDown: servicesWithDown,
 	}, nil
 }
 
@@ -35,7 +41,7 @@ func (it *App) Run(ctx context.Context) error {
 }
 
 func (it *App) Down(cxt context.Context) error {
-	for _, s := range it.Services {
+	for _, s := range it.ServicesWithDown {
 		s.Down(cxt)
 	}
 

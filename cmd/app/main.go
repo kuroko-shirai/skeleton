@@ -31,9 +31,12 @@ func main() {
 	}
 
 	app, err := application.New(
-		ctx, []service.Service{
-			mssqlManager,
+		ctx,
+		[]service.Service{
 			userService,
+		},
+		[]service.ServiceWithDown{
+			mssqlManager,
 		},
 	)
 	if err != nil {

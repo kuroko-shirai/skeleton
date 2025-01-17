@@ -6,20 +6,18 @@ import (
 	"skeleton/internal/configuration"
 	"skeleton/internal/repositories/mssqlmanager"
 	"time"
-
-	"github.com/jmoiron/sqlx"
 )
 
 type UserService struct {
-	db *sqlx.DB
+	mssqlManager mssqlmanager.MSSQLManagerRepo
 }
 
 func New(
 	ctx context.Context,
 	cfg *configuration.Configuration,
-	dm mssqlmanager.MSSQLManagerRepo,
+	mssqlManager mssqlmanager.MSSQLManagerRepo,
 ) (*UserService, error) {
-	return &UserService{db: dm.GetDB()}, nil
+	return &UserService{mssqlManager: mssqlManager}, nil
 }
 
 func (it *UserService) Up(ctx context.Context) error {
@@ -31,12 +29,11 @@ func (it *UserService) Up(ctx context.Context) error {
 	}
 }
 
-func (it *UserService) Down(ctx context.Context) error {
-	return nil
-}
-
 func (it *UserService) DoSomething() error {
 	log.Println("ping")
+
+	// Here we can use db connection from MSSQL
+	// mssqlManagerdb := it.mssqlManager.GetDB()
 
 	return nil
 }

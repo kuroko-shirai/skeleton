@@ -7,7 +7,7 @@ import (
 )
 
 type MSSQLManagerRepo interface {
-	service.Service
+	service.ServiceWithDown
 
 	// Here you can define your own methods.
 	GetDB() *sqlx.DB
