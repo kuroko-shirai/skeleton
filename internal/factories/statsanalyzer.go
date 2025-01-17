@@ -1,17 +1,17 @@
-package statsanalyzer
+package factories
 
 import (
 	"context"
 	"skeleton/internal/configuration"
 	"skeleton/internal/infrastructure/statsanalyzer"
-	repo "skeleton/internal/repositories/statsanalyzer"
+	"skeleton/internal/repositories/service"
 )
 
-type Factory struct{}
+type StatsAnalyzerFactory struct{}
 
-func (it *Factory) New(
+func (it *StatsAnalyzerFactory) New(
 	ctx context.Context,
 	cfg *configuration.Configuration,
-) (repo.StatsAnalyzerRepo, error) {
+) (service.Service, error) {
 	return statsanalyzer.New(ctx, cfg)
 }

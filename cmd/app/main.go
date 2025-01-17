@@ -6,7 +6,7 @@ import (
 
 	"skeleton/internal/application"
 	"skeleton/internal/configuration"
-	"skeleton/internal/factories/statsanalyzer"
+	"skeleton/internal/factories"
 	"skeleton/internal/repositories/service"
 )
 
@@ -18,7 +18,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	saFactory := &statsanalyzer.Factory{}
+	saFactory := &factories.StatsAnalyzerFactory{}
 	sa, err := saFactory.New(ctx, cfg)
 	if err != nil {
 		log.Fatal(err)
