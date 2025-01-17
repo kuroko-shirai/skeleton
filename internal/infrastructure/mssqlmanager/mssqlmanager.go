@@ -40,20 +40,11 @@ func New(
 }
 
 func (it *MSSQLManager) Up(ctx context.Context) error {
-	select {
-	case <-ctx.Done():
-		return nil
-	default:
-		return it.process(ctx)
+	if err := it.ping(ctx); err != nil {
+		return err
 	}
-}
 
-func (it *MSSQLManager) process(_ context.Context) error {
-	for {
-		//time.Sleep(time.Second)
-
-		//log.Println("ping")
-	}
+	return nil
 }
 
 func (it *MSSQLManager) Down(ctx context.Context) error {
@@ -62,4 +53,8 @@ func (it *MSSQLManager) Down(ctx context.Context) error {
 
 func (it *MSSQLManager) GetDB() *sqlx.DB {
 	return it.storage
+}
+
+func (it *MSSQLManager) ping(ctx context.Context) error {
+	return it.storage.PingContext(ctx)
 }
