@@ -4,18 +4,32 @@ import (
 	"context"
 	"log"
 
-	"skeleton/internal/infra"
+	"skeleton/internal/application"
+	"skeleton/internal/configuration"
+	"skeleton/internal/repositories/service"
+	"skeleton/internal/repositories/statsanalyzer"
 )
 
 func main() {
 	ctx := context.Background()
 
-	app, err := infra.New(ctx)
+	cfg, err := configuration.New()
 	if err != nil {
 		log.Fatal(err)
-		return
 	}
-	defer app.Down(ctx)
 
-	app.Run(ctx)
+	saFactory := &statsanalyzer.Factory{}
+	sa, err := saFactory.New(ctx, cfg)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	app, err := application.New(ctx, []service.Service{sa})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if err := app.Run(ctx); err != nil {
+		log.Fatal(err)
+	}
 }

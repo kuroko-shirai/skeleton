@@ -5,16 +5,11 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"skeleton/internal/config"
+	"skeleton/internal/configuration"
 
 	_ "github.com/denisenkom/go-mssqldb"
 	"github.com/jmoiron/sqlx"
 )
-
-type StatsAnalyzerRepo interface {
-	Up(ctx context.Context) error
-	Down(ctx context.Context) error
-}
 
 type StatsAnalyzer struct {
 	storage *sqlx.DB
@@ -22,7 +17,7 @@ type StatsAnalyzer struct {
 
 func New(
 	ctx context.Context,
-	cfg *config.Config,
+	cfg *configuration.Configuration,
 ) (*StatsAnalyzer, error) {
 	newDSN := fmt.Sprintf(
 		"sqlserver://%s:%s@%s:%s?database=%s",
@@ -37,7 +32,7 @@ func New(
 
 	newConnection, err := sql.Open(newDriver, newDSN)
 	if err != nil {
-		return nil, fmt.Errorf("Возникли проблемы при открытии подключения к MSSQL базе. Error: %w, Path: %s, Driver: %s", err, newDSN, newDriver)
+		return nil, err
 	}
 
 	return &StatsAnalyzer{
@@ -45,17 +40,17 @@ func New(
 	}, nil
 }
 
-func (this *StatsAnalyzer) Up(ctx context.Context) error {
+func (it *StatsAnalyzer) Up(ctx context.Context) error {
 	select {
 	case <-ctx.Done():
 		return nil
 	default:
-		return this.process(ctx)
+		return it.process(ctx)
 	}
 }
 
-func (this *StatsAnalyzer) Down(ctx context.Context) error {
-	return this.storage.Close()
+func (it *StatsAnalyzer) Down(ctx context.Context) error {
+	return it.storage.Close()
 }
 
 const (
@@ -80,11 +75,11 @@ type Row struct {
 	Value string
 }
 
-func (this *StatsAnalyzer) process(_ context.Context) error {
+func (it *StatsAnalyzer) process(_ context.Context) error {
 	for {
 		fmt.Println(">>0")
 
-		result, err := this.storage.Query(_sql)
+		result, err := it.storage.Query(_sql)
 		if err != nil {
 			fmt.Println(">>0 err", err)
 			return err

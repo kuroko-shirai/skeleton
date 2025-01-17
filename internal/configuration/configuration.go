@@ -1,4 +1,4 @@
-package config
+package configuration
 
 import (
 	"skeleton/pkg/mssql"
@@ -12,7 +12,7 @@ const (
 	_path = "./config.yaml"
 )
 
-type Config struct {
+type Configuration struct {
 	// TODO: Here place configurations of your services.
 
 	// Here defined default configurations. Please, put your
@@ -23,8 +23,8 @@ type Config struct {
 	// Jaeger     jaeger.Config     `yaml:"jaeger"`
 }
 
-func New() (*Config, error) {
-	var config Config
+func New() (*Configuration, error) {
+	var config Configuration
 
 	if err := cleanenv.ReadConfig(_path, &config); err != nil {
 		return nil, err
