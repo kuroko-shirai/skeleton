@@ -18,13 +18,24 @@ func main() {
 		log.Fatal(err)
 	}
 
-	saFactory := &factories.StatsAnalyzerFactory{}
-	sa, err := saFactory.New(ctx, cfg)
+	mssqlManagerFactory := &factories.MSSQLManagerFactory{}
+	mssqlManager, err := mssqlManagerFactory.New(ctx, cfg)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	app, err := application.New(ctx, []service.Service{sa})
+	userServiceFactory := &factories.UserServiceFactory{}
+	userService, err := userServiceFactory.New(ctx, cfg, mssqlManager)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	app, err := application.New(
+		ctx, []service.Service{
+			mssqlManager,
+			userService,
+		},
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
