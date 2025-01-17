@@ -6,8 +6,8 @@ import (
 
 	"skeleton/internal/application"
 	"skeleton/internal/configuration"
+	"skeleton/internal/factories/statsanalyzer"
 	"skeleton/internal/repositories/service"
-	"skeleton/internal/repositories/statsanalyzer"
 )
 
 func main() {
