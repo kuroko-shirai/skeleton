@@ -17,7 +17,7 @@ type metrics interface {
 }
 
 type Config struct {
-	Name                 string        `env:"NAME" yaml:"name"`
+	Name                 string        `env:"REDIS_NAME" yaml:"name"`
 	Hosts                []string      `env:"REDIS_HOST" yaml:"host"`
 	Username             string        `env:"REDIS_USERNAME" yaml:"username"`
 	Password             string        `env:"REDIS_PASSWORD" yaml:"password"`

@@ -24,6 +24,12 @@ func main() {
 		log.Fatal(err)
 	}
 
+	redisManagerFactory := &factories.REDISManagerFactory{}
+	redisManager, err := redisManagerFactory.New(ctx, cfg)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	userServiceFactory := &factories.UserServiceFactory{}
 	userService, err := userServiceFactory.New(ctx, cfg, mssqlManager)
 	if err != nil {
@@ -37,6 +43,7 @@ func main() {
 		},
 		[]service.ServiceWithDown{
 			mssqlManager,
+			redisManager,
 		},
 	)
 	if err != nil {
